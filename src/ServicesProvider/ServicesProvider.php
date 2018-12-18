@@ -39,7 +39,7 @@ class ServicesProvider
                 } elseif ($authorizer->checkAccess($currentUser, 'create_blog', ['user' => $currentUser])) {
                     return $response->withHeader('UF-Redirect', $c->router->pathFor('create_blog'));
                 } elseif ($authorizer->checkAccess($currentUser, 'uri_account_settings')) {
-                    return $response->withHeader('UF-Redirect', $c->router->pathFor('settings'));
+                    return $response->withHeader('UF-Redirect', $c->router->pathFor('home'));
                 } else {
                     return $response->withHeader('UF-Redirect', $c->router->pathFor('index'));
                 }

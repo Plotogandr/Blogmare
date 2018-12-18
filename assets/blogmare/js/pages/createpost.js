@@ -15,6 +15,6 @@ $(document).ready(function () {
         msgTarget: $("#alerts-page"),
         keyupDelay: 500
     }).on("submitSuccess.ufForm", function () {
-        window.location.replace(document.getElementById('form-post-title').value);
+        window.location.reload();
     });
 });

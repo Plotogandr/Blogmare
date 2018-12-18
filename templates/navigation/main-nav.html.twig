@@ -19,6 +19,11 @@
                         <a href="{{ site.uri.public }}/blogs">{{ translate("BLOGS") }}</a>
                     </li>
                 {% endblock %}
+                {% if checkAuthenticated() %}
+                    <li>
+                        <a href="{{ site.uri.public }}/blogs/my_blog">{{ translate("MY_BLOG") }}</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 

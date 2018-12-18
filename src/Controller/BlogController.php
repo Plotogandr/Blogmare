@@ -34,10 +34,6 @@ class BlogController extends SimpleController
         $authorizer  = $this->ci->authorizer;
         $currentUser = $this->ci->currentUser;
 
-        if ($currentUser == null) {
-            throw new ForbiddenException();
-        }
-
         if ( ! $authorizer->checkAccess($currentUser, 'create_blog', [
             'user' => $currentUser,
         ])) {
@@ -63,10 +59,6 @@ class BlogController extends SimpleController
 
         $authorizer  = $this->ci->authorizer;
         $currentUser = $this->ci->currentUser;
-
-        if ($currentUser == null) {
-            throw new ForbiddenException();
-        }
 
         if ( ! $authorizer->checkAccess($currentUser, 'create_blog', [
             'user' => $currentUser,
@@ -103,10 +95,6 @@ class BlogController extends SimpleController
     {
         $schema      = new RequestSchema('schema://create_post.yaml');
         $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);
-        $currentUser = $this->ci->currentUser;
-        if ($currentUser == null) {
-            throw new ForbiddenException();
-        }
 
         return $this->ci->view->render($response, 'pages/createpost.html.twig', [
             "blog_name" => $args["blog_name"],
@@ -122,10 +110,7 @@ class BlogController extends SimpleController
     {
         $ms          = $this->ci->alerts;
         $params      = $request->getParsedBody();
-        $currentUser = $this->ci->currentUser;
-        if ($currentUser == null) {
-            throw new ForbiddenException();
-        }
+
         $schema      = new RequestSchema('schema://create_post.yaml');
         $transformer = new RequestDataTransformer($schema);
         $form        = $transformer->transform($params);
@@ -140,12 +125,12 @@ class BlogController extends SimpleController
         $id      = $this->ci->session['account.current_user_id'];
         $blog_id = $this->ci->blog->getBlogById($id)->getAttribute('blog_id');
         $this->ci->post->createBlogPost($blog_id, $form['post_title'], $form['post_text']);
+        $ms->addMessage('success', 'Blog post has been created');
     }
 
     public function getPost(Request $request, Response $response, $args)
     {
         $post = $this->ci->post->getPostById($args['post_id']);
-        var_dump($post);
         $this->ci->view->render($response, 'pages/post.html.twig', [
             'post' => $post,
         ]);
@@ -165,6 +150,11 @@ class BlogController extends SimpleController
         return $this->ci->view->render($response, 'pages/blog.html.twig', [
             'blog' => $blog,
         ]);
+    }
+
+    public function getHome(Request $request, Response $response, $args)
+    {
+        return $this->ci->view->render($response, 'pages/home.html.twig');
     }
 
 }
