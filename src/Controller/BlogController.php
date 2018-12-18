@@ -10,14 +10,12 @@ namespace UserFrosting\Sprinkle\Blogmare\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Fortress\RequestDataTransformer;
 use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\Sprinkle\Blogmare\Database\Models\Blog;
 use UserFrosting\Sprinkle\Core\Controller\SimpleController;
-use UserFrosting\Support\Exception\BadRequestException;
 use UserFrosting\Support\Exception\ForbiddenException;
 
 class BlogController extends SimpleController
@@ -35,6 +33,11 @@ class BlogController extends SimpleController
     {
         $authorizer  = $this->ci->authorizer;
         $currentUser = $this->ci->currentUser;
+
+        if ($currentUser == null) {
+            throw new ForbiddenException();
+        }
+
         if ( ! $authorizer->checkAccess($currentUser, 'create_blog', [
             'user' => $currentUser,
         ])) {
@@ -60,6 +63,11 @@ class BlogController extends SimpleController
 
         $authorizer  = $this->ci->authorizer;
         $currentUser = $this->ci->currentUser;
+
+        if ($currentUser == null) {
+            throw new ForbiddenException();
+        }
+
         if ( ! $authorizer->checkAccess($currentUser, 'create_blog', [
             'user' => $currentUser,
         ])) {
@@ -93,8 +101,12 @@ class BlogController extends SimpleController
 
     public function getWritePost(Request $request, Response $response, $args)
     {
-        $schema    = new RequestSchema('schema://create_post.yaml');
-        $validator = new JqueryValidationAdapter($schema, $this->ci->translator);
+        $schema      = new RequestSchema('schema://create_post.yaml');
+        $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);
+        $currentUser = $this->ci->currentUser;
+        if ($currentUser == null) {
+            throw new ForbiddenException();
+        }
 
         return $this->ci->view->render($response, 'pages/createpost.html.twig', [
             "blog_name" => $args["blog_name"],
@@ -108,9 +120,12 @@ class BlogController extends SimpleController
 
     public function postWritePost(Request $request, Response $response, $args)
     {
-        $ms     = $this->ci->alerts;
-        $params = $request->getParsedBody();
-
+        $ms          = $this->ci->alerts;
+        $params      = $request->getParsedBody();
+        $currentUser = $this->ci->currentUser;
+        if ($currentUser == null) {
+            throw new ForbiddenException();
+        }
         $schema      = new RequestSchema('schema://create_post.yaml');
         $transformer = new RequestDataTransformer($schema);
         $form        = $transformer->transform($params);
