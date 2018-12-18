@@ -61,7 +61,9 @@
                                                   * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
                                                   */
 
-        this.getConverter = function () { return markdownConverter; }
+        this.getConverter = function () {
+            return markdownConverter;
+        };
 
         var that = this,
             panels;
@@ -91,7 +93,7 @@
             forceRefresh();
         };
 
-    }
+    };
 
     // before: contains all the text in the input box BEFORE the selection.
     // after: contains all the text in the input box AFTER the selection.
@@ -152,7 +154,10 @@
         if (remove) {
             beforeReplacer = afterReplacer = "";
         } else {
-            beforeReplacer = function (s) { that.before += s; return ""; }
+            beforeReplacer = function (s) {
+                that.before += s;
+                return "";
+            };
             afterReplacer = function (s) { that.after = s + that.after; return ""; }
         }
 
@@ -245,8 +250,7 @@
         this.buttonBar = doc.getElementById("wmd-button-bar" + postfix);
         this.preview = doc.getElementById("wmd-preview" + postfix);
         this.input = doc.getElementById("wmd-input" + postfix);
-    };
-
+    }
     // Returns true if the DOM element is visible, false if it's hidden.
     // Checks if display is anything other than none.
     util.isVisible = function (elem) {
@@ -325,7 +329,7 @@
         pattern = pre + pattern + post;
 
         return new re(pattern, flags);
-    }
+    };
 
     // UNFINISHED
     // The assignment in the while loop makes jslint cranky.
@@ -542,7 +546,7 @@
                 if (window.event) {
                     window.event.returnValue = false;
                 }
-                return;
+
             }
         };
 
@@ -643,7 +647,7 @@
                 this.text = inputArea.value;
             }
 
-        }
+        };
 
         // Sets the selected text in the input box after we've performed an
         // operation.
@@ -760,8 +764,7 @@
             this.scrollTop = chunk.scrollTop;
         };
         this.init();
-    };
-
+    }
     function PreviewManager(converter, panels, previewRefreshCallback) {
 
         var managerObj = this;
@@ -895,11 +898,11 @@
                 parent.appendChild(preview);
             else
                 parent.insertBefore(preview, sibling);
-        }
+        };
 
         var nonSuckyBrowserPreviewSet = function (text) {
             panels.preview.innerHTML = text;
-        }
+        };
 
         var previewSetter;
 
@@ -955,8 +958,7 @@
         };
 
         init();
-    };
-
+    }
     // Creates the background behind the hyperlink text entry box.
     // And download dialog
     // Most of this has been moved to CSS but the div creation and
@@ -1318,8 +1320,7 @@
             if (button.execute) {
                 button.execute(undoManager);
             }
-        };
-
+        }
         function setupButton(button, isEnabled) {
 
             var normalYShift = "0px";
@@ -1406,7 +1407,7 @@
                 spacer.id = "wmd-spacer" + num + postfix;
                 buttonRow.appendChild(spacer);
                 xPosition += 25;
-            }
+            };
 
             buttons.bold = makeButton("wmd-bold-button", "Strong <strong> Ctrl+B", "0px", bindCommand("doBold"));
             buttons.italic = makeButton("wmd-italic-button", "Emphasis <em> Ctrl+I", "-20px", bindCommand("doItalic"));
@@ -1464,8 +1465,7 @@
                 setupButton(buttons.undo, undoManager.canUndo());
                 setupButton(buttons.redo, undoManager.canRedo());
             }
-        };
-
+        }
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
 
     }
@@ -1551,7 +1551,7 @@
             chunk.after = markup + chunk.after;
         }
 
-        return;
+
     };
 
     commandProto.stripLinkDefs = function (text, defsToAdd) {

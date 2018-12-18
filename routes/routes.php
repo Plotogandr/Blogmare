@@ -3,6 +3,10 @@
 global $app;
 $config = $app->getContainer()->get('config');
 
+$app->get('/', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getIndex')
+    ->add('checkEnvironment')
+    ->setName('index');
+
 $app->get('/blogs', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:pageList');
 
 $app->get('/blogs/my_blog', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getMyBlog')->add('authGuard');

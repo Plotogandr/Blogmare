@@ -20,6 +20,17 @@ use UserFrosting\Support\Exception\ForbiddenException;
 
 class BlogController extends SimpleController
 {
+
+    public function getIndex(Request $request, Response $response, $args)
+    {
+        $currentUser = $this->ci->currentUser;
+        if ($currentUser == null) {
+            return $this->ci->view->render($response, 'pages/index.html.twig');
+        }
+
+        return $response->withRedirect('/home');
+    }
+
     public function pageList(Request $request, Response $response, $args)
     {
         $blogs = Blog::all();
@@ -85,7 +96,6 @@ class BlogController extends SimpleController
     public function getBlog(Request $request, Response $response, $args)
     {
         $blog = $this->ci->blog->getBlogByName($args["blog_name"]);
-
         return $this->ci->view->render($response, 'pages/blog.html.twig', [
             "blog" => $blog,
         ]);
@@ -146,7 +156,7 @@ class BlogController extends SimpleController
         }
 
         $blog = $this->ci->blog->getBlogById($currentUser->id);
-
+        var_dump($blog);
         return $this->ci->view->render($response, 'pages/blog.html.twig', [
             'blog' => $blog,
         ]);

@@ -1,1 +1,6 @@
 {% extends 'pages/abstract/default.html.twig' %}
+{% set page_active = "home" %}
+
+{% block page_title %}{{ translate("HOME") }}{% endblock %}
+
+{% block page_description %}{{ translate("WELCOME_TO", {'title': site.title}) }}{% endblock %}

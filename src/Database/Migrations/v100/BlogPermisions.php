@@ -32,7 +32,7 @@ class BlogPermisions extends Migration
             [
                 'slug'        => 'create_blog',
                 'name'        => 'Create a blog',
-                'conditions'  => 'no_blog(users.id)',
+                'conditions'  => 'no_blog(user.id)',
                 'description' => 'Allows the user to create a blog if he has none yet.',
             ],
         ];

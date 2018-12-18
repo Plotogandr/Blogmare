@@ -18,12 +18,13 @@ class BlogService
 
     public function getBlogNameById($id)
     {
+
         return $blog = Blog::query()->find($id)->getAttribute("blog_name");
     }
 
     public function getBlogById($id)
     {
-        return $blog = Blog::query()->find($id);
+        return $blog = Blog::query()->findOrFail($id);
     }
 
     public function getBlogByName($blog_name)

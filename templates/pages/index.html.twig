@@ -1,9 +1,9 @@
 {% extends "pages/abstract/default.html.twig" %}
 
-{% set page_active = "home" %}
+{#{% set page_active = "index" %}#}
 
 {# Overrides blocks in head of base template #}
-{% block page_title %}{{ translate("HOME") }}{% endblock %}
+{% block page_title %}{{ translate("LANDING") }}{% endblock %}
 
 {% block page_description %}{{ translate("WELCOME_TO", {'title': site.title}) }}{% endblock %}
 
