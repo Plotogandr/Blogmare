@@ -8,7 +8,7 @@ use UserFrosting\Sprinkle\Core\Database\Models\Model;
 class Blog extends Model
 {
     protected $table = 'blogs';
-
+    protected $primaryKey = 'blog_id';
     protected $fillable = [
         'id',
         'blog_name',
@@ -21,12 +21,12 @@ class Blog extends Model
 
     public function followed()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'blog_user', 'blog_id', 'user_id');
     }
 
     public function posts()
     {
-        return $this->hasMany(BlogPost::class);
+        return $this->hasMany(BlogPost::class, 'blog_id', 'blog_id');
     }
 
     public $timestamps = true;

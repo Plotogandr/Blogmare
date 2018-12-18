@@ -26,3 +26,8 @@ $app->get('/posts/p/{post_id}/{post_name}', 'UserFrosting\Sprinkle\Blogmare\Cont
 
 $app->get('/home',
     'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getHome')->add('authGuard')->setName('home');
+
+$app->post('/blogs/b/{blog_name}/follow',
+    'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postFollow')->add('authGuard');
+$app->post('/blogs/b/{blog_name}/unfollow',
+    'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postUnfollow')->add('authGuard');

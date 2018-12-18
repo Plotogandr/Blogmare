@@ -105,7 +105,6 @@ class BlogController extends SimpleController
     {
         $schema      = new RequestSchema('schema://create_post.yaml');
         $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);
-
         return $this->ci->view->render($response, 'pages/createpost.html.twig', [
             "blog_name" => $args["blog_name"],
             "page"      => [
@@ -156,7 +155,6 @@ class BlogController extends SimpleController
         }
 
         $blog = $this->ci->blog->getBlogById($currentUser->id);
-        var_dump($blog);
         return $this->ci->view->render($response, 'pages/blog.html.twig', [
             'blog' => $blog,
         ]);
@@ -165,6 +163,44 @@ class BlogController extends SimpleController
     public function getHome(Request $request, Response $response, $args)
     {
         return $this->ci->view->render($response, 'pages/home.html.twig');
+    }
+
+    public function postFollow(Request $request, Response $response, $args)
+    {
+        $currentUser = $this->ci->currentUser;
+        $blog_name   = $args['blog_name'];
+        $blog        = $this->ci->blog->getBlogByName($blog_name);
+        $authorizer  = $this->ci->authorizer;
+
+        if ( ! $authorizer->checkAccess($currentUser, 'follow_blog', [
+            'blog' => $blog,
+            'user' => $currentUser,
+        ])) {
+            throw new ForbiddenException();
+        }
+
+        $this->ci->blog->followBlog($blog_name, $currentUser->id);
+
+        return $response->withRedirect("/blogs/b/$blog_name");
+    }
+
+    public function postUnfollow(Request $request, Response $response, $args)
+    {
+        $currentUser = $this->ci->currentUser;
+        $blog_name   = $args['blog_name'];
+        $blog        = $this->ci->blog->getBlogByName($blog_name);
+        $authorizer  = $this->ci->authorizer;
+
+        if ( ! $authorizer->checkAccess($currentUser, 'unfollow_blog', [
+            'blog' => $blog,
+            'user' => $currentUser,
+        ])) {
+            throw new ForbiddenException();
+        }
+
+        $this->ci->blog->unfollowBlog($blog, $currentUser->id);
+
+        return $response->withRedirect("/blogs/b/$blog_name");
     }
 
 }

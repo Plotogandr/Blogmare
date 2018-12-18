@@ -8,7 +8,7 @@ class BlogPost extends Model
 {
 
     protected $table = 'blog_posts';
-
+    protected $primaryKey = 'post_id';
     protected $fillable = [
         'blog_id',
         'post_title',

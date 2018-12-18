@@ -7,7 +7,9 @@ return [
         ],
     ],
     'debug'        => [
-        'smtp' => true,
+        'smtp'    => true,
+        'auth'    => true,
+        'queries' => true,
     ],
     'site'         => [
         'author' => 'Blogmare',

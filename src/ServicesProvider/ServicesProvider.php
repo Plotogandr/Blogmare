@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 use UserFrosting\Sprinkle\Blogmare\Blog\BlogPostService;
 use UserFrosting\Sprinkle\Blogmare\Blog\BlogService;
+use UserFrosting\Sprinkle\Core\Facades\Debug;
 
 class ServicesProvider
 {
@@ -49,11 +50,29 @@ class ServicesProvider
         $container->extend('authorizer', function ($authorizer, $c) {
             $authorizer->addCallback('no_blog', function ($id) use ($c) {
                 $blog = $c->blog->getBlogById($id);
-
                 return $blog == null;
-            }
-            );
+            });
+            $authorizer->addCallback('not_following', function ($blog, $id) use ($c) {
+                if ($blog->id == $id) {
+                    return false;
+                }
+                foreach ($blog->followed as $follower) {
+                    if ($follower->id == $id) {
+                        return false;
+                    }
+                }
 
+                return true;
+            });
+            $authorizer->addCallback('following', function ($blog, $id) use ($c) {
+                foreach ($blog->followed as $follower) {
+                    if ($follower->id == $id) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
             return $authorizer;
         });
     }

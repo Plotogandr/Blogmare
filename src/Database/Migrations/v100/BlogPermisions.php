@@ -33,7 +33,19 @@ class BlogPermisions extends Migration
                 'slug'        => 'create_blog',
                 'name'        => 'Create a blog',
                 'conditions'  => 'no_blog(user.id)',
-                'description' => 'Allows the user to create a blog if he has none yet.',
+                'description' => 'Allows the user to create a blog if they have none yet.',
+            ],
+            [
+                'slug'        => 'follow_blog',
+                'name'        => 'Follow a blog',
+                'conditions'  => 'not_following(blog, user.id)',
+                'description' => 'Allows the user to follow a blog if they are not following that blog yet',
+            ],
+            [
+                'slug'        => 'unfollow_blog',
+                'name'        => 'Unfollow a blog',
+                'conditions'  => 'following(blog, user.id)',
+                'description' => 'Allows the user to unfollow a blog it they follow it.',
             ],
         ];
     }

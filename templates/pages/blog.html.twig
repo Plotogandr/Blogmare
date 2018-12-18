@@ -3,8 +3,28 @@
 {# Overrides blocks in head of base template #}
 {% block page_title %}{{ blog.blog_name }}{% endblock %}
 {% block page_description %}{% endblock %}
-
 {% block body_matter %}
+    {% block follow %}
+        {% if checkAuthenticated() %}
+            {% if checkAccess("follow_blog", {
+                'blog': blog,
+                'user': current_user
+            }) %}
+                <form action="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}/follow" method="post">
+                    {% include "forms/csrf.html.twig" %}
+                    <button class="btn btn-default">{{ translate('FOLLOW') }}</button>
+                </form>
+            {% elseif checkAccess('unfollow_blog', {
+                'blog': blog,
+                'user': current_user
+            }) %}
+                <form action="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}/unfollow" method="post">
+                    {% include "forms/csrf.html.twig" %}
+                    <button class="btn btn-default">{{ translate('UNFOLLOW') }}</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
     {% for post in blog.posts %}
         <div class="thumbnail">
             <div class="caption">
