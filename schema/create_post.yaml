@@ -1,0 +1,20 @@
+post_title:
+  validators:
+    length:
+      label: "&POST_TITLE"
+      min: 1
+      max: 50
+      message: CREATE_POST.VALIDATE.TITLE.RANGE
+    required:
+      label: "&POST_TITLE"
+      message: CREATE_POST.VALIDATE.TITLE.REQUIRED
+post_text:
+  validators:
+    length:
+      label: "&POST_TEXT"
+      min: 1
+      max: 25000
+      message: CREATE_POST.VALIDATE.TEXT.RANGE
+    required:
+      label: "&POST_TEXT"
+      message: CREATE_POST.VALIDATE.TEXT.REQUIRED

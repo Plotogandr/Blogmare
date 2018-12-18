@@ -1,0 +1,47 @@
+{% extends 'pages/abstract/default.html.twig' %}
+{% block stylesheets %}
+    {% block stylesheets_site %}
+        {{ assets.css() | raw }}
+    {% endblock %}
+    {% block stylesheets_page %}
+        {{ assets.css('css/pages/markdown') | raw }}
+    {% endblock %}
+{% endblock %}
+{% block page_title %}{{ translate("BLOG_POST") }}{% endblock %}
+{% block body_matter %}
+    <div class="createpost-form container">
+        <div class="form-alerts" id="alerts-page"></div>
+        <form id="createpost" role="form" action="{{ site.uri.public }}/posts/write" method="post"
+              class="form">
+            {% include "forms/csrf.html.twig" %}
+            <div class="form-group">
+                <label for="form-post-title">{{ translate('BLOG_POST.TITLE') }}</label>
+                <input type="text" name="post_title" class="form-control" id="form-post-title"
+                       placeholder="{{ translate('BLOG_POST.TITLE_PLACEHOLDER') }}">
+            </div>
+            <div class="form-group">
+                <label for="form-post-text">{{ translate('BLOG_POST.TEXT') }}</label>
+                <div class="wmd-panel">
+                    <div id="wmd-button-bar"></div>
+                    <div id="textdiv">
+                    <textarea class="form-control wmd-input" name="post_text" id="wmd-input"
+                              placeholder="{{ translate('BLOG_POST.TEXT_PLACEHOLDER') }}"></textarea>
+                    </div>
+                    <div id="wmd-preview" class="wmd-preview"></div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-block btn-primary">{{ translate('BLOG_POST.CREATE') }}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts_page %}
+    <!-- Include validation rules -->
+    <script>
+        {% include "pages/partials/page.js.twig" %}
+    </script>
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/createpost') | raw }}
+{% endblock %}

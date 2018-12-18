@@ -1,0 +1,75 @@
+{
+  "bundle": {
+    "js/pages/createblog": {
+      "scripts": [
+        "vendor/speakingurl/speakingurl.min.js",
+        "blogmare/js/pages/createblog.js"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    },
+    "js/pages/createpost": {
+      "scripts": [
+        "vendor/speakingurl/speakingurl.min.js",
+        "blogmare/js/pages/createpost.js",
+        "blogmare/js/pages/createpost.js",
+        "vendor/stackexchange/Markdown.Converter.js",
+        "vendor/stackexchange/Markdown.Editor.js",
+        "vendor/stackexchange/Markdown.Sanitizer.js",
+        "blogmare/js/pages/markdownEditor.js"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    },
+    "js/pages/blog": {
+      "scripts": [
+        "vendor/stackexchange/Markdown.Converter.js",
+        "vendor/stackexchange/Markdown.Sanitizer.js",
+        "blogmare/js/pages/convertMarkdown.js"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    },
+    "js/pages/post": {
+      "scripts": [
+        "vendor/stackexchange/Markdown.Converter.js",
+        "vendor/stackexchange/Markdown.Sanitizer.js",
+        "blogmare/js/pages/convertMarkdown.js"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    },
+    "css/pages/markdown": {
+      "styles": [
+        "blogmare/css/pages/markdown.css"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    }
+  }
+}

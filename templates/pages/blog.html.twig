@@ -1,0 +1,18 @@
+{% extends 'pages/abstract/default.html.twig' %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{ blog.blog_name }}{% endblock %}
+{% block page_description %}{% endblock %}
+
+{% block body_matter %}
+    {% for post in blog.posts %}
+        <div class="thumbnail">
+            <div class="caption">
+                <h3>{{ post.post_title }}</h3>
+                <div class="block-text" style="overflow: hidden; text-overflow: ellipsis">
+                    {{ post.post_text }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

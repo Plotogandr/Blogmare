@@ -1,0 +1,37 @@
+{% extends 'pages/abstract/default.html.twig' %}
+{% block stylesheets %}
+    {% block stylesheets_site %}
+        {{ assets.css() | raw }}
+    {% endblock %}
+    {% block stylesheets_page %}
+        {{ assets.css('css/pages/markdown') | raw }}
+    {% endblock %}
+{% endblock %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{ post.post_name }}{% endblock %}
+{% block page_description %}{% endblock %}
+
+{% block body_matter %}
+    <br>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ post.post_title }}</div>
+            {% autoescape false %}
+                <div style="padding: 20px">
+                    <div id="post-text">{{ post.post_text }}</div>
+                </div>
+            {% endautoescape %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts_page %}
+    <!-- Include validation rules -->
+    <script>
+        {% include "pages/partials/page.js.twig" %}
+    </script>
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/post') | raw }}
+{% endblock %}

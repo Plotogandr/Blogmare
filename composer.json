@@ -1,0 +1,17 @@
+{
+  "name": "blogmare/blogmare",
+  "type": "userfrosting-sprinkle",
+  "description": "Blogmare",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Blogmare",
+      "homepage": "http://www.blogmare.net"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "UserFrosting\\Sprinkle\\Blogmare\\": "src/"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{% extends "pages/abstract/default.html.twig" %}
+
+{% set page_active = "create blog" %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{ translate('CREATEBLOG') }}{% endblock %}
+
+{% block page_description %}{{ translate('PAGE.CREATEBLOG.DESCRIPTION', {'site_name': site.title }) }}{% endblock %}
+
+{% block body_attributes %}
+    class="hold-transition createblog-page"
+{% endblock %}
+
+{% block content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="{{ site.uri.public }}">{{ site.title }}</a>
+        </div>
+        <!-- /.login-logo -->
+
+        <div class="createblog-form">
+            <p class="login-box-msg"><strong>{{ translate('CREATEBLOG') }}</strong></p>
+            <div class="form-alerts" id="alerts-page"></div>
+
+            <form id="createblog" role="form" action="{{ site.uri.public }}/blogs/create" method="post" class="form">
+                {% include "forms/csrf.html.twig" %}
+                <div class="form-group">
+                    <label for="form-blog-name">{{ translate('BLOG_NAME') }}</label>
+                    <input type="text" name="blog_name" placeholder="{{ translate('BLOG_NAME.CHOOSE') }}"
+                           class="form-control" id="form-blog-name" autocomplete="off">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-block btn-primary">{{ translate('CREATE_BLOG') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts_page %}
+    <!-- Include validation rules -->
+    <script>
+        {% include "pages/partials/page.js.twig" %}
+    </script>
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/createblog') | raw }}
+{% endblock %}

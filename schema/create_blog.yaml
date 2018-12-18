@@ -1,0 +1,14 @@
+blog_name:
+  validators:
+    length:
+      label: "&BLOG_NAME"
+      min: 1
+      max: 50
+      message: CREATEBLOG.VALIDATE.RANGE
+    required:
+      label: "&BLOG_NAME"
+      message: CREATEBLOG.VALIDATE.REQUIRED
+    not_equals:
+      label: "&BLOG_NAME"
+      value: "create"
+      message: CREATEBLOG.VALIDATE.NOTALLOWED
