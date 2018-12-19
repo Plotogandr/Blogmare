@@ -11,19 +11,67 @@
 {# Overrides blocks in head of base template #}
 {% block page_title %}{{ post.post_name }}{% endblock %}
 {% block page_description %}{% endblock %}
-
-{% block body_matter %}
-    <br>
-    <div class="container-fluid">
-        <div class="panel panel-default">
-            <div class="panel-heading">{{ post.post_title }}</div>
-            {% autoescape false %}
-                <div style="padding: 20px">
-                    <div id="post-text">{{ post.post_text }}</div>
-                </div>
-            {% endautoescape %}
+{% macro recursiveReplies(comment, post) %}
+    <div>
+        <div class="panel" id="{{ comment.comment_id }}">
+            <div class="panel-body">{{ comment.comment_text }}</div>
+            <div class="panel-footer">{{ comment.created_at }}
+                <button id="{{ comment.comment_id }}" class="btn btn-default">{{ translate("REPLY_COMMENT") }}</button>
+            </div>
+        </div>
+        <form class="replyForm" id="{{ comment.comment_id }}"
+              action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment/{{ comment.comment_id }}" method="post">
+            {% include "forms/csrf.html.twig" %}
+            <div class="form-group">
+                <label for="comment-reply">{{ translate('COMMENT_REPLY') }}</label>
+                <textarea class="form-control" id="comment-reply" name="comment_text"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">{{ translate('REPLY_COMMENT') }}</button>
+            </div>
+        </form>
+        <div style="margin-left: 3%">
+            {% if comment.replies|length %}
+                {% for reply in comment.replies %}
+                    {{ _self.recursiveReplies(reply, post) }}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
+{% endmacro %}
+
+{% block body_matter %}
+    {% block post %}
+        <div class="container-fluid" style="padding-top: 2%">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ post.post_title }}</div>
+                {% autoescape false %}
+                    <div style="padding: 15px">
+                        <div id="post-text">{{ post.post_text }}</div>
+                    </div>
+                {% endautoescape %}
+            </div>
+        </div>
+    {% endblock %}
+    {% block comments %}
+        {% block form %}
+            <div style="padding-bottom: 5%">
+                <form action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment" method="post">
+                    {% include "forms/csrf.html.twig" %}
+                    <div class="form-group">
+                        <label for="comment-input">{{ translate("WRITE_COMMENT") }}</label>
+                        <textarea id="comment-input" name="comment_text" class="form-control"></textarea>
+                    </div>
+                    <button class="btn btn-primary">{{ translate("POST_COMMENT") }}</button>
+                </form>
+            </div>
+        {% endblock %}
+        {% block text %}
+            {% for comment in comments %}
+                {{ _self.recursiveReplies(comment, post) }}
+            {% endfor %}
+        {% endblock %}
+    {% endblock %}
 {% endblock %}
 
 {% block scripts_page %}
@@ -31,7 +79,6 @@
     <script>
         {% include "pages/partials/page.js.twig" %}
     </script>
-
     <!-- Include page-specific JS -->
     {{ assets.js('js/pages/post') | raw }}
 {% endblock %}

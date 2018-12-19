@@ -133,15 +133,18 @@ class BlogController extends SimpleController
 
         $id      = $this->ci->session['account.current_user_id'];
         $blog_id = $this->ci->blog->getBlogById($id)->getAttribute('blog_id');
-        $this->ci->post->createBlogPost($blog_id, $form['post_title'], $form['post_text']);
+        $this->ci->blog->createBlogPost($blog_id, $form['post_title'], $form['post_text']);
         $ms->addMessage('success', 'Blog post has been created');
     }
 
     public function getPost(Request $request, Response $response, $args)
     {
-        $post = $this->ci->post->getPostById($args['post_id']);
+        $post     = $this->ci->blog->getPostById($args['post_id']);
+        $comments = $this->ci->blog->getCommentsByPostId($args['post_id']);
+//        var_dump($comments);
         $this->ci->view->render($response, 'pages/post.html.twig', [
-            'post' => $post,
+            'post'     => $post,
+            'comments' => $comments,
         ]);
     }
 
@@ -162,7 +165,12 @@ class BlogController extends SimpleController
 
     public function getHome(Request $request, Response $response, $args)
     {
-        return $this->ci->view->render($response, 'pages/home.html.twig');
+        $currentUser = $this->ci->currentUser;
+        $blog_posts  = $this->ci->blog->getFollowedBlogs($currentUser->id);
+
+        return $this->ci->view->render($response, 'pages/home.html.twig', [
+            'posts' => $blog_posts,
+        ]);
     }
 
     public function postFollow(Request $request, Response $response, $args)
@@ -179,7 +187,7 @@ class BlogController extends SimpleController
             throw new ForbiddenException();
         }
 
-        $this->ci->blog->followBlog($blog_name, $currentUser->id);
+        $this->ci->blog->followBlog($blog, $currentUser->id);
 
         return $response->withRedirect("/blogs/b/$blog_name");
     }
@@ -201,6 +209,27 @@ class BlogController extends SimpleController
         $this->ci->blog->unfollowBlog($blog, $currentUser->id);
 
         return $response->withRedirect("/blogs/b/$blog_name");
+    }
+
+    public function postComment(Request $request, Response $response, $args)
+    {
+        $currentUser = $this->ci->currentUser;
+        $post_id     = $args['post_id'];
+        $form        = $request->getParsedBody();
+        $this->ci->blog->createComment($post_id, $currentUser->id, $form['comment_text']);
+
+        return $response->withRedirect("/posts/p/$post_id");
+    }
+
+    public function postCommentReply(Request $request, Response $response, $args)
+    {
+        $currentUser = $this->ci->currentUser;
+        $post_id     = $args['post_id'];
+        $comment_id  = $args['comment_id'];
+        $form        = $request->getParsedBody();
+        $this->ci->blog->createCommentReply($post_id, $currentUser->id, $form['comment_text'], $comment_id);
+
+        return $response->withRedirect("/posts/p/$post_id");
     }
 
 }

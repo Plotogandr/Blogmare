@@ -31,3 +31,7 @@ $app->post('/blogs/b/{blog_name}/follow',
     'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postFollow')->add('authGuard');
 $app->post('/blogs/b/{blog_name}/unfollow',
     'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postUnfollow')->add('authGuard');
+
+$app->post('/posts/p/{post_id}/comment', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postComment');
+$app->post('/posts/p/{post_id}/comment/{comment_id}',
+    'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postCommentReply');

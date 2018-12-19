@@ -4,3 +4,13 @@
 {% block page_title %}{{ translate("HOME") }}{% endblock %}
 
 {% block page_description %}{{ translate("WELCOME_TO", {'title': site.title}) }}{% endblock %}
+
+{% block body_matter %}
+    {% for post in posts %}
+        <div class="panel panel">
+            <div class="panel-heading">
+                <a href="{{ site.uri.public }}/posts/p/{{ post.bp_id }}">{{ post.bp_title }} {{ post.bp_created_at }}</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

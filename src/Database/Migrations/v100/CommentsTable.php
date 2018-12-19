@@ -22,8 +22,7 @@ class CommentsTable extends Migration
                 $table->increments('comment_id');
                 $table->integer('post_id')->unsigned();
                 $table->integer('id')->unsigned();
-                $table->date('date');
-                $table->date('editDate');
+                $table->integer('parent_comment_id')->unsigned();
                 $table->text('comment_text');
                 $table->timestamps();
 

@@ -13,6 +13,6 @@ class User extends \UserFrosting\Sprinkle\Account\Database\Models\User
 {
     public function follows()
     {
-        return $this->belongsToMany(Blog::class);
+        return $this->belongsToMany(Blog::class, 'blog_user', 'user_id', 'blog_id');
     }
 }
