@@ -8,28 +8,33 @@
     {% endblock %}
 {% endblock %}
 
-{# Overrides blocks in head of base template #}
-{% block page_title %}{{ post.post_name }}{% endblock %}
+{% block page_title %}{{ post.post_title }}{% endblock %}
 {% block page_description %}{% endblock %}
 {% macro recursiveReplies(comment, post) %}
     <div>
         <div class="panel" id="{{ comment.comment_id }}">
             <div class="panel-body">{{ comment.comment_text }}</div>
-            <div class="panel-footer">{{ comment.created_at }}
-                <button id="{{ comment.comment_id }}" class="btn btn-default">{{ translate("REPLY_COMMENT") }}</button>
+            <div class="panel-footer" style="overflow: hidden">{{ comment.created_at }}
+                {% if checkAuthenticated() %}
+                    <button id="{{ comment.comment_id }}" class="btn btn-default"
+                            style="float: right">{{ translate("COMMENT.REPLY") }}</button>
+                {% endif %}
             </div>
         </div>
-        <form class="replyForm" id="{{ comment.comment_id }}"
-              action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment/{{ comment.comment_id }}" method="post">
-            {% include "forms/csrf.html.twig" %}
-            <div class="form-group">
-                <label for="comment-reply">{{ translate('COMMENT_REPLY') }}</label>
-                <textarea class="form-control" id="comment-reply" name="comment_text"></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">{{ translate('REPLY_COMMENT') }}</button>
-            </div>
-        </form>
+        {% if checkAuthenticated() %}
+            <form class="replyForm" id="{{ comment.comment_id }}"
+                  action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment/{{ comment.comment_id }}"
+                  method="post" style="margin-left: 3%">
+                {% include "forms/csrf.html.twig" %}
+                <div class="form-group">
+                    <label for="comment-reply">{{ translate('COMMENT.REPLY_TEXT') }}</label>
+                    <textarea class="form-control" id="comment-reply" name="comment_text"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">{{ translate('COMMENT.REPLY_POST') }}</button>
+                </div>
+            </form>
+        {% endif %}
         <div style="margin-left: 3%">
             {% if comment.replies|length %}
                 {% for reply in comment.replies %}
@@ -42,30 +47,30 @@
 
 {% block body_matter %}
     {% block post %}
-        <div class="container-fluid" style="padding-top: 2%">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ post.post_title }}</div>
-                {% autoescape false %}
-                    <div style="padding: 15px">
-                        <div id="post-text">{{ post.post_text }}</div>
-                    </div>
-                {% endautoescape %}
-            </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ post.post_title }}</div>
+            {% autoescape false %}
+                <div style="padding: 15px">
+                    <div id="post-text">{{ post.post_text }}</div>
+                </div>
+            {% endautoescape %}
         </div>
     {% endblock %}
     {% block comments %}
-        {% block form %}
-            <div style="padding-bottom: 5%">
-                <form action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment" method="post">
-                    {% include "forms/csrf.html.twig" %}
-                    <div class="form-group">
-                        <label for="comment-input">{{ translate("WRITE_COMMENT") }}</label>
-                        <textarea id="comment-input" name="comment_text" class="form-control"></textarea>
-                    </div>
-                    <button class="btn btn-primary">{{ translate("POST_COMMENT") }}</button>
-                </form>
-            </div>
-        {% endblock %}
+        {% if checkAuthenticated() %}
+            {% block form %}
+                <div style="padding-bottom: 5%">
+                    <form action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment" method="post">
+                        {% include "forms/csrf.html.twig" %}
+                        <div class="form-group">
+                            <label for="comment-input">{{ translate("COMMENT.WRITE") }}</label>
+                            <textarea id="comment-input" name="comment_text" class="form-control"></textarea>
+                        </div>
+                        <button class="btn btn-primary">{{ translate("COMMENT.POST") }}</button>
+                    </form>
+                </div>
+            {% endblock %}
+        {% endif %}
         {% block text %}
             {% for comment in comments %}
                 {{ _self.recursiveReplies(comment, post) }}
