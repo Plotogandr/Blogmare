@@ -1,6 +1,7 @@
 <?php
 
 return [
+    "MY_BLOG"     => 'My blog',
     "CREATEBLOG"  => [
         "@TRANSLATION" => 'Create Blog',
     ],
@@ -23,5 +24,13 @@ return [
         "TEXT"              => 'Blog post text',
         "TEXT_PLACEHOLDER"  => 'Your blog post...',
         "CREATE"            => 'Create your blog post',
+    ],
+    "COMMENT"     => [
+        "@TRANSLATION" => 'Comment',
+        "REPLY"        => 'Reply to comment',
+        "REPLY_TEXT"   => 'Comment reply',
+        'REPLY_POST'   => 'Post comment reply',
+        'WRITE'        => 'Write comment',
+        'POST'         => 'Post comment',
     ],
 ];
