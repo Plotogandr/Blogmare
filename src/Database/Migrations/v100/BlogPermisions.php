@@ -47,6 +47,18 @@ class BlogPermisions extends Migration
                 'conditions'  => 'following(blog, user.id)',
                 'description' => 'Allows the user to unfollow a blog it they follow it.',
             ],
+            [
+                'slug' => 'edit_comment',
+                'name' => 'Edit your comment',
+                'conditions' => 'equals(user.id, comment.id)',
+                'description' => 'Allows the user to edit their own comments'
+            ],
+            [
+                'slug' => 'edit_post',
+                'name' => 'Edit your post',
+                'conditions' => 'equals(user.id, post.id)',
+                'description' => 'Allows the user to edit their own posts'
+            ]
         ];
     }
 

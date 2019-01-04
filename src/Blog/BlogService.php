@@ -37,15 +37,16 @@ class BlogService
     {
         return Blog::query()
                    ->join('blog_user', 'blog_user.blog_id', '=', 'blogs.blog_id')
-                   ->join('blog_posts', 'blogs.blog_id', '=', 'blog_posts.blog_id')
-                   ->select('blogs.*',
-                            'blog_posts.post_title as bp_title',
-                            'blog_posts.post_text as bp_text',
-                            'blog_posts.created_at as bp_created_at',
-                            'blog_posts.updated_at as bp_updated_at',
-                            'blog_posts.post_id as bp_id')
-                   ->where('blog_user.user_id', '=', $id)
-                   ->get()->sortByDesc('bp_created_at')->all();
+            ->join('users', 'users.id', 'blog_user.user_id')
+            ->join('blog_posts', 'blogs.blog_id', '=', 'blog_posts.blog_id')
+            ->select('blogs.*',
+                     'blog_posts.post_title as bp_title',
+                     'blog_posts.post_text as bp_text',
+                     'blog_posts.created_at as bp_created_at',
+                     'blog_posts.updated_at as bp_updated_at',
+                     'blog_posts.post_id as bp_id')
+            ->where('blog_user.user_id', '=', $id)
+            ->get()->sortByDesc('bp_created_at')->all();
     }
 
     public function getBlogByName($blog_name)
@@ -95,7 +96,12 @@ class BlogService
         return Comment::query()->where([
             ['post_id', '=', $post_id],
             ['parent_comment_id', '=', 0],
-        ])->with('repliesRecursive')->get()->all();
+        ])->with('repliesRecursive')->with('writer')->get()->all();
+    }
+
+    public function getCommentById($comment_id)
+    {
+        return Comment::query()->where('comment_id', '=', $comment_id)->first();
     }
 
     public function createCommentReply($post_id, $id, $comment_text, $comment_id)
@@ -120,5 +126,11 @@ class BlogService
         $post->post_title = $new_post_title;
         $post->post_text = $new_post_text;
         $post->update();
+    }
+
+    public function editComment($comment, $new_comment_text)
+    {
+        $comment->comment_text = $new_comment_text;
+        $comment->update();
     }
 }

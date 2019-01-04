@@ -38,3 +38,5 @@ $app->post('/posts/p/{post_id}/comment/{comment_id}',
 
 $app->get('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getEditPost');
 $app->post('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postEditPost');
+
+$app->post('/posts/p/{post_id}/comment/edit/{comment_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postEditComment');

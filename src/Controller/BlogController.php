@@ -144,6 +144,7 @@ class BlogController extends SimpleController
         $this->ci->view->render($response, 'pages/post.html.twig', [
             'post'     => $post,
             'comments' => $comments,
+            'currentUser' => $this->ci->currentUser,
         ]);
     }
 
@@ -264,10 +265,20 @@ class BlogController extends SimpleController
             return $response->withStatus(400);
         }
 
-        $currentUser = $this->ci->currentUser;
         $post_id = $args['post_id'];
         $post = $this->ci->blog->getPostById($post_id);
         $this->ci->blog->editPost($post, $form['post_title'], $form['post_text']);
+        return $response->withRedirect("/posts/p/$post_id");
+    }
+
+    public function postEditComment(Request $request, Response $response, $args)
+    {
+        //TODO: Validate User is comment ownder
+        $form = $request->getParsedBody();
+        $post_id = $args['post_id'];
+        $comment_id = $args['comment_id'];
+        $comment = $this->ci->blog->getCommentById($comment_id);
+        $this->ci->blog->editComment($comment, $form['comment_text']);
         return $response->withRedirect("/posts/p/$post_id");
     }
 }

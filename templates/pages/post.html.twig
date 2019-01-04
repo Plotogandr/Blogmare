@@ -10,14 +10,24 @@
 
 {% block page_title %}{{ post.post_title }}{% endblock %}
 {% block page_description %}{% endblock %}
-{% macro recursiveReplies(comment, post) %}
+{% macro recursiveReplies(comment, post, currentUser) %}
     <div>
         <div class="panel" id="{{ comment.comment_id }}">
             <div class="panel-body">{{ comment.comment_text }}</div>
-            <div class="panel-footer" style="overflow: hidden">{{ comment.created_at }}
+            <div class="panel-footer" style="overflow: hidden">
+                {{ comment.created_at }}
+                {% if comment.created_at != comment.updated_at %}
+                    {{ comment.updated_at }}
+                {% endif %}
                 {% if checkAuthenticated() %}
-                    <button id="{{ comment.comment_id }}" class="btn btn-default"
+                    <button id="{{ comment.comment_id }}" class="reply btn btn-default"
                             style="float: right">{{ translate("COMMENT.REPLY") }}</button>
+                {% endif %}
+                {% if checkAccess("edit_comment", {
+                    'user': currentUser,
+                    'comment': comment,
+                }) %}
+                    <button id="{{ comment.comment_id }}-edit" class="edit btn btn-default">{{ translate("COMMENT.EDIT") }}</button>
                 {% endif %}
             </div>
         </div>
@@ -34,11 +44,27 @@
                     <button type="submit" class="btn btn-primary">{{ translate('COMMENT.REPLY_POST') }}</button>
                 </div>
             </form>
+            {% if checkAccess("edit_comment", {
+                'user': currentUser,
+                'comment': comment,
+            }) %}
+                <form class="editForm" id="{{ comment.comment_id }}-edit"
+                      action="{{ site.uri.public }}/posts/p/{{ post.post_id }}/comment/edit/{{ comment.comment_id }}"
+                      method="post">
+                    {% include "forms/csrf.html.twig" %}
+                    <div class="form-group">
+                        <textarea class="form-control" name="comment_text">{{ comment.comment_text }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="edit btn btn-primary" >{{ translate('COMMENT.EDIT') }}</button>
+                    </div>
+                </form>
+            {% endif %}
         {% endif %}
         <div style="margin-left: 3%">
             {% if comment.replies|length %}
                 {% for reply in comment.replies %}
-                    {{ _self.recursiveReplies(reply, post) }}
+                    {{ _self.recursiveReplies(reply, post, currentUser) }}
                 {% endfor %}
             {% endif %}
         </div>
@@ -50,10 +76,20 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 {{ post.post_title }}
+                {{ post.created_at }}
+                {% if post.created_at != post.updated_at %}
+                    {{ post.updated_at }}
+                {% endif %}
+                {% if checkAuthenticated() %}
+                    {% if checkAccess("edit_post", {
+                        'user': currentUser,
+                        'post': post.blog.user,
+                    }) %}
                 <a href="{{ site.uri.public }}/posts/edit/{{ post.post_id }}">
                     <input type="button" class="btn btn-primary" value="{{ translate("POST.EDIT") }}">
                 </a>
-                </form>
+                {% endif %}
+                {% endif %}
             </div>
             {% autoescape false %}
                 <div style="padding: 15px">
@@ -79,7 +115,7 @@
         {% endif %}
         {% block text %}
             {% for comment in comments %}
-                {{ _self.recursiveReplies(comment, post) }}
+                {{ _self.recursiveReplies(comment, post, currentUser) }}
             {% endfor %}
         {% endblock %}
     {% endblock %}
