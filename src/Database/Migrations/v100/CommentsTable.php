@@ -22,7 +22,7 @@ class CommentsTable extends Migration
                 $table->increments('comment_id');
                 $table->integer('post_id')->unsigned();
                 $table->integer('id')->unsigned();
-                $table->integer('parent_comment_id')->unsigned();
+                $table->integer('parent_comment_id')->unsigned()->default(0);
                 $table->text('comment_text');
                 $table->timestamps();
 

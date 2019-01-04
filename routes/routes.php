@@ -35,3 +35,6 @@ $app->post('/blogs/b/{blog_name}/unfollow',
 $app->post('/posts/p/{post_id}/comment', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postComment');
 $app->post('/posts/p/{post_id}/comment/{comment_id}',
     'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postCommentReply');
+
+$app->get('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getEditPost');
+$app->post('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postEditPost');

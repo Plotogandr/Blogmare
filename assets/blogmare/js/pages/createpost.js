@@ -1,5 +1,4 @@
-$(document).ready(function () {
-    // Autovalidate username field on a delay
+$(document).ready(function ($) {
     var timer;
     $("#createpost").find('input[name=post_title], input[name=post_text]').on('input change', function () {
         clearTimeout(timer); // Clear the timer so we don't end up with dupes.

@@ -141,7 +141,6 @@ class BlogController extends SimpleController
     {
         $post     = $this->ci->blog->getPostById($args['post_id']);
         $comments = $this->ci->blog->getCommentsByPostId($args['post_id']);
-//        var_dump($comments);
         $this->ci->view->render($response, 'pages/post.html.twig', [
             'post'     => $post,
             'comments' => $comments,
@@ -232,4 +231,43 @@ class BlogController extends SimpleController
         return $response->withRedirect("/posts/p/$post_id");
     }
 
+    public function getEditPost(Request $request, Response $response, $args)
+    {
+        //TODO: Check if request is send by writer of the blog post
+        $schema      = new RequestSchema('schema://create_post.yaml');
+        $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);
+        $post = $this->ci->blog->getPostById($args['post_id']);
+        return $this->ci->view->render($response, 'pages/editpost.html.twig', [
+            'post' => $post,
+            'page' => [
+                'validators' => [
+                    'createpost' => $validator->rules('JSON', false)
+                ]
+            ]
+        ]);
+    }
+
+    public function postEditPost(Request $request, Response $response, $args)
+    {
+        //TODO: Validate User is post owner
+        $ms          = $this->ci->alerts;
+        $params      = $request->getParsedBody();
+
+        $schema      = new RequestSchema('schema://create_post.yaml');
+        $transformer = new RequestDataTransformer($schema);
+        $form        = $transformer->transform($params);
+        $validator   = new ServerSideValidator($schema, $this->ci->translator);
+
+        if ( ! $validator->validate($form)) {
+            $ms->addValidationErrors($validator);
+
+            return $response->withStatus(400);
+        }
+
+        $currentUser = $this->ci->currentUser;
+        $post_id = $args['post_id'];
+        $post = $this->ci->blog->getPostById($post_id);
+        $this->ci->blog->editPost($post, $form['post_title'], $form['post_text']);
+        return $response->withRedirect("/posts/p/$post_id");
+    }
 }

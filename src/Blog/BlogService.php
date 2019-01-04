@@ -38,16 +38,19 @@ class BlogService
         return Blog::query()
                    ->join('blog_user', 'blog_user.blog_id', '=', 'blogs.blog_id')
                    ->join('blog_posts', 'blogs.blog_id', '=', 'blog_posts.blog_id')
-                   ->select('blogs.*', 'blog_posts.post_title as bp_title', 'blog_posts.post_text as bp_text',
-                       'blog_posts.created_at as bp_created_at', 'blog_posts.updated_at as bp_updated_at',
-                       'blog_posts.post_id as bp_id')
+                   ->select('blogs.*',
+                            'blog_posts.post_title as bp_title',
+                            'blog_posts.post_text as bp_text',
+                            'blog_posts.created_at as bp_created_at',
+                            'blog_posts.updated_at as bp_updated_at',
+                            'blog_posts.post_id as bp_id')
                    ->where('blog_user.user_id', '=', $id)
                    ->get()->sortByDesc('bp_created_at')->all();
     }
 
     public function getBlogByName($blog_name)
     {
-        return $blog = Blog::query()->where("blog_name", '=', $blog_name)->with(['posts', 'user'])->first();
+        return Blog::query()->where("blog_name", '=', $blog_name)->with(['posts', 'user'])->first();
     }
 
     public function followBlog($blog, $id)
@@ -105,8 +108,6 @@ class BlogService
         ]);
 
         $originalComment = Comment::query()->find($comment_id)->first();
-
-
         $comment->writer()->associate($id);
         $comment->blogPost()->associate($post_id);
         $comment->comment()->associate($comment_id);
@@ -114,4 +115,10 @@ class BlogService
         $originalComment->replies();
     }
 
+    public function editPost($post, $new_post_title, $new_post_text)
+    {
+        $post->post_title = $new_post_title;
+        $post->post_text = $new_post_text;
+        $post->update();
+    }
 }

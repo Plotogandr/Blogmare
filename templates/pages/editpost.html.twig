@@ -11,27 +11,25 @@
 {% block body_matter %}
     <div class="createpost-form">
         <div class="form-alerts" id="alerts-page"></div>
-        <form id="createpost" role="form" action="{{ site.uri.public }}/posts/write" method="post"
+        <form id="createpost" role="form" action="{{ site.uri.public }}/posts/edit/{{ post.post_id }}" method="post"
               class="form">
             {% include "forms/csrf.html.twig" %}
             <div class="form-group">
                 <label for="form-post-title">{{ translate('BLOG_POST.TITLE') }}</label>
-                <input type="text" name="post_title" class="form-control" id="form-post-title"
-                       placeholder="{{ translate('BLOG_POST.TITLE_PLACEHOLDER') }}">
+                <input type="text" name="post_title" class="form-control" id="form-post-title" value="{{ post.post_title }}">
             </div>
             <div class="form-group">
                 <label for="form-post-text">{{ translate('BLOG_POST.TEXT') }}</label>
                 <div class="wmd-panel">
                     <div id="wmd-button-bar"></div>
                     <div id="textdiv">
-                    <textarea class="form-control wmd-input" name="post_text" id="wmd-input"
-                              placeholder="{{ translate('BLOG_POST.TEXT_PLACEHOLDER') }}"></textarea>
+                    <textarea class="form-control wmd-input" name="post_text" id="wmd-input">{{ post.post_text }}</textarea>
                     </div>
                     <div id="wmd-preview" class="wmd-preview"></div>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-block btn-primary">{{ translate('BLOG_POST.CREATE') }}</button>
+                <button type="submit" class="btn btn-block btn-primary">{{ translate('BLOG_POST.EDIT') }}</button>
             </div>
         </form>
     </div>
