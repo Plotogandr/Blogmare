@@ -17,10 +17,6 @@ class ServicesProvider
             return new BlogService();
         };
 
-        $container['post'] = function ($c) {
-            return new BlogPostService();
-        };
-
         $container['redirect.onLogin'] = function ($c) {
 
             return function (Request $request, Response $response, array $args) use ($c) {

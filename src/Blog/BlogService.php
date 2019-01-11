@@ -36,7 +36,7 @@ class BlogService
     public function getFollowedBlogs($id)
     {
         return Blog::query()
-                   ->join('blog_user', 'blog_user.blog_id', '=', 'blogs.blog_id')
+            ->join('blog_user', 'blog_user.blog_id', '=', 'blogs.blog_id')
             ->join('users', 'users.id', 'blog_user.user_id')
             ->join('blog_posts', 'blogs.blog_id', '=', 'blog_posts.blog_id')
             ->select('blogs.*',

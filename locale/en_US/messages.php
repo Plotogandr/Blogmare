@@ -33,4 +33,8 @@ return [
         'WRITE'        => 'Write comment',
         'POST'         => 'Post comment',
     ],
+    "POST" => [
+        "@TRANSLATION" => 'Post',
+        "EDIT" => 'Edit post',
+    ]
 ];
