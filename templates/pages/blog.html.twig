@@ -1,8 +1,8 @@
 {% extends 'pages/abstract/default.html.twig' %}
 
-{# Overrides blocks in head of base template #}
 {% block page_title %}{{ blog.blog_name }}{% endblock %}
 {% block page_description %}{% endblock %}
+{% block breadcrumb %}{% endblock %}
 {% block body_matter %}
     {% block follow %}
         {% if checkAuthenticated() %}
@@ -12,7 +12,10 @@
             }) %}
                 <form action="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}/follow" method="post">
                     {% include "forms/csrf.html.twig" %}
-                    <button class="btn btn-default">{{ translate('FOLLOW') }}</button>
+                    <div class="form-group">
+                        <button class="btn btn-default btn-block">{{ translate('FOLLOW') }}</button>
+                        <a href="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}">
+                    </div>
                 </form>
             {% elseif checkAccess('unfollow_blog', {
                 'blog': blog,
@@ -20,7 +23,9 @@
             }) %}
                 <form action="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}/unfollow" method="post">
                     {% include "forms/csrf.html.twig" %}
-                    <button class="btn btn-default">{{ translate('UNFOLLOW') }}</button>
+                    <div class="form-group">
+                        <button class="btn btn-default btn-block">{{ translate('UNFOLLOW') }}</button>
+                    </div>
                 </form>
             {% endif %}
         {% endif %}
@@ -28,11 +33,10 @@
     {% for post in blog.posts %}
         <div class="thumbnail">
             <div class="caption">
-                <h3><a href="/posts/p/{{ post.post_id }}">{{ post.post_title }}</a></h3>
-                <div class="block-text"
-                     style="overflow: hidden; text-overflow: ellipsis; word-break: break-word; max-height: 20ch">
-                    {{ post.post_text }}
-                </div>
+                {{ post.created_at }}
+                <h3>
+                    <a href="/posts/p/{{ post.post_id }}">{{ post.post_title }}</a>
+                </h3>
             </div>
         </div>
     {% endfor %}

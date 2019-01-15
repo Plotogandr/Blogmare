@@ -1,0 +1,28 @@
+{% extends 'pages/abstract/default.html.twig' %}
+
+{% block page_title %}Followed Blogs{% endblock %}
+{% block page_description %}{% endblock %}
+{% block body_matter %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <th>Blog</th>
+            <th>Owner</th>
+            <th>Last Post</th>
+            {% for blog in blogs %}
+                    <tr>
+                        <td>
+                            <a href="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}">
+                                {{ blog.blog_name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ blog.user.user_name }}
+                        </td>
+                        <td>
+                            {{ blog.bp_created_at|date("Y-m-d H:i") }}
+                        </td>
+                    </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -281,4 +281,14 @@ class BlogController extends SimpleController
         $this->ci->blog->editComment($comment, $form['comment_text']);
         return $response->withRedirect("/posts/p/$post_id");
     }
+
+    public function getFollowedBlogs(Request $request, Response $response, $args)
+    {
+        $blogs = $this->ci->blog->getFollowedBlogs($this->ci->currentUser->id);
+
+        return $this->ci->view->render($response, 'pages/following.html.twig', [
+            'blogs' => $blogs,
+        ]);
+    }
+
 }

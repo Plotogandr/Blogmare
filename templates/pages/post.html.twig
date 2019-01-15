@@ -9,26 +9,31 @@
 {% endblock %}
 
 {% block page_title %}{{ post.post_title }}{% endblock %}
+{% block breadcrumb %}{% endblock %}
 {% block page_description %}{% endblock %}
 {% macro recursiveReplies(comment, post, currentUser) %}
     <div>
         <div class="panel" id="{{ comment.comment_id }}">
             <div class="panel-body">{{ comment.comment_text }}</div>
-            <div class="panel-footer" style="overflow: hidden">
-                {{ comment.created_at }}
-                {% if comment.created_at != comment.updated_at %}
-                    {{ comment.updated_at }}
+            <div class="panel-footer">
+                {% if checkAuthenticated() %}
+                    <button id="{{ comment.comment_id }}" class="reply btn btn-default">{{ translate("COMMENT.REPLY") }}</button>
                 {% endif %}
                 {% if checkAuthenticated() %}
-                    <button id="{{ comment.comment_id }}" class="reply btn btn-default"
-                            style="float: right">{{ translate("COMMENT.REPLY") }}</button>
+                    {% if checkAccess("edit_comment", {
+                        'user': currentUser,
+                        'comment': comment,
+                    }) %}
+                        <button id="{{ comment.comment_id }}-edit" class="edit btn btn-default">{{ translate("COMMENT.EDIT") }}</button>
+                    {% endif %}
                 {% endif %}
-                {% if checkAccess("edit_comment", {
-                    'user': currentUser,
-                    'comment': comment,
-                }) %}
-                    <button id="{{ comment.comment_id }}-edit" class="edit btn btn-default">{{ translate("COMMENT.EDIT") }}</button>
-                {% endif %}
+                    <span style="float: right">
+                        {{ translate("COMMENT.POSTED_BY") }} {{ comment.writer.user_name }}
+                        {{ translate("COMMENT.POSTED_ON") }} {{ comment.created_at|date("Y-m-d H:i") }}
+                        {% if comment.created_at != comment.updated_at %}
+                            {{ translate("COMMENT.EDITED_ON") }} {{ comment.updated_at|date("Y-m-d H:i") }}
+                        {% endif %}
+                    </span>
             </div>
         </div>
         {% if checkAuthenticated() %}
@@ -74,28 +79,28 @@
 {% block body_matter %}
     {% block post %}
         <div class="panel panel-default">
-            <div class="panel-heading">
-                {{ post.post_title }}
-                {{ post.created_at }}
-                {% if post.created_at != post.updated_at %}
-                    {{ post.updated_at }}
-                {% endif %}
-                {% if checkAuthenticated() %}
-                    {% if checkAccess("edit_post", {
-                        'user': currentUser,
-                        'post': post.blog.user,
-                    }) %}
-                <a href="{{ site.uri.public }}/posts/edit/{{ post.post_id }}">
-                    <input type="button" class="btn btn-primary" value="{{ translate("POST.EDIT") }}">
-                </a>
-                {% endif %}
-                {% endif %}
-            </div>
-            {% autoescape false %}
-                <div style="padding: 15px">
-                    <div id="post-text">{{ post.post_text }}</div>
+            <div class="panel-heading" style="overflow: hidden">
+                <div>
+                    {{ translate("POST.POSTED_BY") }} {{ post.blog.user.user_name }}
+                    {{ translate("POST.POSTED_ON") }} {{ post.created_at|date("Y-m-d H:i")}}
+                    {% if post.created_at != post.updated_at %}
+                        {{ translate("POST.EDITED_ON") }} {{ post.updated_at|date("Y-m-d H:i") }}
+                    {% endif %}
+                    {% if checkAuthenticated() %}
+                        {% if checkAccess("edit_post", {
+                            'user': currentUser,
+                            'post': post.blog.user,
+                        }) %}
+                            <a href="{{ site.uri.public }}/posts/edit/{{ post.post_id }}" class="text-right">
+                                <input type="button" class="btn btn-default text-right" value="{{ translate("POST.EDIT") }}" style="float: right">
+                            </a>
+                        {% endif %}
+                    {% endif %}
                 </div>
-            {% endautoescape %}
+            </div>
+            <div style="padding: 15px">
+                <div id="post-text">{{ post.post_text }}</div>
+            </div>
         </div>
     {% endblock %}
     {% block comments %}
@@ -124,7 +129,7 @@
 {% block scripts_page %}
     <!-- Include validation rules -->
     <script>
-        {% include "pages/partials/page.js.twig" %}
+     {% include "pages/partials/page.js.twig" %}
     </script>
     <!-- Include page-specific JS -->
     {{ assets.js('js/pages/post') | raw }}

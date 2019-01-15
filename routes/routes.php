@@ -40,3 +40,5 @@ $app->get('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\Bl
 $app->post('/posts/edit/{post_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postEditPost');
 
 $app->post('/posts/p/{post_id}/comment/edit/{comment_id}', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:postEditComment');
+
+$app->get('/blogs/followed', 'UserFrosting\Sprinkle\Blogmare\Controller\BlogController:getFollowedBlogs');

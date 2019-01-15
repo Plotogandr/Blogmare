@@ -2,6 +2,7 @@
 
 return [
     "MY_BLOG"     => 'My blog',
+    "FOLLOWED_BLOGS" => 'Followed Blogs',
     "CREATEBLOG"  => [
         "@TRANSLATION" => 'Create Blog',
     ],
@@ -32,9 +33,16 @@ return [
         'REPLY_POST'   => 'Post comment reply',
         'WRITE'        => 'Write comment',
         'POST'         => 'Post comment',
+        'EDIT' => 'Edit comment',
+        'POSTED_BY' => 'Posted by',
+        'POSTED_ON' => 'on',
+        'EDITED_ON' => 'edited on'
     ],
     "POST" => [
         "@TRANSLATION" => 'Post',
         "EDIT" => 'Edit post',
+        "POSTED_BY" => 'Posted by',
+        "POSTED_ON" => 'on',
+        "EDITED_ON" => 'edited on'
     ]
 ];
