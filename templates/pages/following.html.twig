@@ -19,7 +19,17 @@
                             {{ blog.user.user_name }}
                         </td>
                         <td>
-                            {{ blog.bp_created_at|date("Y-m-d H:i") }}
+                            <a href="{{ site.uri.public }}/posts/p/{{ blog.bp_id }}">{{ blog.bp_title }}</a>
+                            on the
+                            <span>{{ blog.bp_created_at|date("Y-m-d H:i") }}</span>
+                        </td>
+                        <td>
+                            <form action="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}/unfollow" method="post">
+                                {% include "forms/csrf.html.twig" %}
+                                <div class="form-group">
+                                    <button class="btn btn-default btn-block">{{ translate('UNFOLLOW') }}</button>
+                                </div>
+                            </form>
                         </td>
                     </tr>
             {% endfor %}

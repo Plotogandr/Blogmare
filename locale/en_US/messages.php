@@ -1,6 +1,8 @@
 <?php
 
 return [
+    "BLOGS" => 'Blogs',
+    "WRITE_POST" => 'Write post',
     "MY_BLOG"     => 'My blog',
     "FOLLOWED_BLOGS" => 'Followed Blogs',
     "CREATEBLOG"  => [

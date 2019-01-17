@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: czarnecki
- * Date: 06.12.18
- * Time: 16:46
- */
 
 namespace UserFrosting\Sprinkle\Blogmare\Controller;
 
@@ -103,6 +97,14 @@ class BlogController extends SimpleController
 
     public function getWritePost(Request $request, Response $response, $args)
     {
+
+        $authorizer  = $this->ci->authorizer;
+        $currentUser = $this->ci->currentUser;
+
+        if ($authorizer->checkAccess($currentUser, 'create_blog', ['user' => $currentUser])) {
+            return $response->withRedirect('/blogs/create');
+        }
+
         $schema      = new RequestSchema('schema://create_post.yaml');
         $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);
         return $this->ci->view->render($response, 'pages/createpost.html.twig', [
@@ -117,6 +119,14 @@ class BlogController extends SimpleController
 
     public function postWritePost(Request $request, Response $response, $args)
     {
+
+        $authorizer  = $this->ci->authorizer;
+        $currentUser = $this->ci->currentUser;
+
+        if ($authorizer->checkAccess($currentUser, 'create_blog', ['user' => $currentUser])) {
+            return $response->withRedirect('/blogs/create');
+        }
+
         $ms          = $this->ci->alerts;
         $params      = $request->getParsedBody();
 
