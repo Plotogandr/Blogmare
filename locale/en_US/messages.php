@@ -11,14 +11,25 @@ return [
     "CREATE_BLOG" => [
         "@TRANSLATION" => 'Create my blog',
     ],
+    "CREATE_POST" => [
+        "VALIDATE" => [
+            "TITLE" => [
+                "REQUIRED" => "Can't leave post title empty"
+            ],
+            "TEXT" => [
+                "REQUIRED" => "Can't create empty blog post"
+            ]
+        ]
+    ],
     "BLOG_NAME"   => [
         "@TRANSLATION" => 'Blog name',
         "CHOOSE"       => 'Choose your blog name',
     ],
-    "PAGE"        => [
-        "CREATEBLOG" => [
-            "DESCRIPTION" => 'Create your own blog',
-        ],
+    "CREATEBLOG" => [
+        "DESCRIPTION" => 'Create your own blog',
+        "VALIDATE" => [
+            "REQUIRED" => "Can't enter an empty blog name"
+        ]
     ],
     "BLOG_POST"   => [
         "@TRANSLATION"      => 'Blog post',
