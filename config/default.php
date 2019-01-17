@@ -18,8 +18,14 @@ return [
         'uri'    => [
             'author' => 'blogmare.net',
         ],
+        'debug' => [
+            'ajax' => false,
+        ]
     ],
     'php'          => [
         'timezone' => 'Europe/London',
     ],
+    'settings' => [
+        'displayErrorDetails' => false
+    ]
 ];
