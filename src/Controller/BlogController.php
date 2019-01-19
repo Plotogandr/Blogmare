@@ -101,9 +101,9 @@ class BlogController extends SimpleController
         $authorizer  = $this->ci->authorizer;
         $currentUser = $this->ci->currentUser;
 
-        if ($authorizer->checkAccess($currentUser, 'create_blog', ['user' => $currentUser])) {
-            return $response->withRedirect('/blogs/create');
-        }
+        // if ($authorizer->checkAccess($currentUser, 'create_blog', ['user' => $currentUser])) {
+        //     return $response->withRedirect('/blogs/create');
+        // }
 
         $schema      = new RequestSchema('schema://create_post.yaml');
         $validator   = new JqueryValidationAdapter($schema, $this->ci->translator);

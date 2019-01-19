@@ -15,7 +15,7 @@
     <div>
         <div class="panel" id="{{ comment.comment_id }}">
             <div class="panel-body">{{ comment.comment_text }}</div>
-            <div class="panel-footer">
+            <div class="panel-footer" style="overflow: hidden">
                 {% if checkAuthenticated() %}
                     <button id="{{ comment.comment_id }}" class="reply btn btn-default">{{ translate("COMMENT.REPLY") }}</button>
                 {% endif %}
@@ -98,7 +98,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div style="padding: 15px">
+            <div style="padding: 15px;">
                 <div id="post-text">{{ post.post_text }}</div>
             </div>
         </div>

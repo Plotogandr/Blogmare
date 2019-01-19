@@ -14,7 +14,7 @@
                         </tr>
                         {% for blog in blogs %}
                             <tr>
-                                <td>{{ blog.blog_name }}</td>
+                                <td><a href="{{ site.uri.public }}/blogs/b/{{ blog.blog_name }}">{{ blog.blog_name }}</a></td>
                             </tr>
                         {% endfor %}
                     </table>

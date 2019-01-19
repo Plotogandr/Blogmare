@@ -1,7 +1,10 @@
 <?php
 
 return [
+    "EDIT_POST" => "Edit post",
+    "CREATE_POST" => "Create post",
     "BLOGS" => 'Blogs',
+    "LANDING" => 'Blogmare',
     "WRITE_POST" => 'Write post',
     "MY_BLOG"     => 'My blog',
     "FOLLOWED_BLOGS" => 'Followed Blogs',

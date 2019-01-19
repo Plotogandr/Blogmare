@@ -1,4 +1,5 @@
 {% extends 'pages/abstract/default.html.twig' %}
+{% block page_description %}{% endblock %}
 {% block stylesheets %}
     {% block stylesheets_site %}
         {{ assets.css() | raw }}
@@ -7,7 +8,7 @@
         {{ assets.css('css/pages/markdown') | raw }}
     {% endblock %}
 {% endblock %}
-{% block page_title %}{{ translate("BLOG_POST") }}{% endblock %}
+{% block page_title %}Create post{% endblock %}
 {% block body_matter %}
     <div class="createpost-form">
         <div class="form-alerts" id="alerts-page"></div>
